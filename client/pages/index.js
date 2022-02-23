@@ -1,9 +1,19 @@
 import React from 'react'
+import buildClient from '../api/build-client'
 
-const index = () => {
+const LandingPage = ({ currentUser }) => {
   return (
-    <div>Landing page</div>
+    currentUser ? <div>Landing page logged</div> : <div>Landing page not logged</div>
   )
 }
 
-export default index
+LandingPage.getInitialProps = async (context) => {
+  const { data } = await buildClient(context).get('/api/users/currentuser').catch((error) => {
+    console.log(error)
+  })
+
+  console.log('landing page')
+  return data
+}
+
+export default LandingPage
